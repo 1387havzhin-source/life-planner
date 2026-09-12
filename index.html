@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planora — برنامه‌ریز شخصی</title>
+<style>
+:root{--bg:#eef1f8;--card:#fff;--text:#18213b;--muted:#8992a5;--primary:#6258ef;--purple:#8b5cf6;--line:#e5e8f0;--soft:#f5f6fb;--green:#18a66a;--orange:#f08a32;--red:#e45757}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+.sidebar{position:fixed;right:0;top:0;bottom:0;width:245px;padding:24px 16px;background:linear-gradient(180deg,#111832,#292f68);color:#fff}
+.logo{font-size:22px;font-weight:800;margin:5px 10px 28px}.logo span{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#9b72ff,#4f46e5);margin-left:7px}
+.nav{display:grid;gap:5px}.nav button{width:100%;text-align:right;background:transparent;color:#cbd0e2;padding:12px;border-radius:12px;font-weight:bold}.nav button.active,.nav button:hover{background:linear-gradient(90deg,#665cf4,#7c3aed);color:#fff}
+.tip{position:absolute;left:16px;right:16px;bottom:20px;padding:14px;border-radius:15px;background:#fff1;color:#d9dceb;font-size:12px}
+main{margin-right:245px;padding:30px 5%;max-width:1550px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.top h1{margin:4px 0;font-size:29px}.muted{font-size:12px;color:var(--muted)}
+.primary{padding:12px 16px;border-radius:11px;background:linear-gradient(135deg,var(--primary),#7c3aed);color:#fff;font-weight:bold}.secondary{padding:9px 12px;border-radius:10px;background:#eeefff;color:#554be5;font-weight:bold}
+.view{display:none}.view.active{display:block}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:17px}.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:19px;box-shadow:0 10px 30px #1a24400b}.stat{padding:18px}.stat span,.stat small{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:27px;margin:8px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:17px;margin-bottom:17px}.card{padding:20px}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.head h2{margin:0;font-size:18px}
+.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid #f0f2f6}.grow{flex:1;display:flex;flex-direction:column;gap:4px}.grow b{font-size:14px}.grow small{font-size:11px;color:#99a1b0}
+.check,.habit{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;text-decoration:none}.check{border:2px solid #dfe3ed}.check.on{background:var(--primary);border-color:var(--primary);color:#fff}.habit{background:#eae8ff;color:#584ee4}.tag{font-size:10px;padding:5px 8px;border-radius:8px;background:#f0f1f6}.danger{color:#a0a7b5;background:none;text-decoration:none}
+.icon{width:40px;height:40px;border-radius:12px;background:#f0f1f7;display:grid;place-items:center}.empty{text-align:center;padding:30px;color:#99a1af}.progress{height:9px;background:#eceef5;border-radius:10px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#574de3,#9b6dff);border-radius:10px}
+.big{font-size:44px;font-weight:800;margin:12px 0}.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.mini div{background:var(--soft);padding:11px;border-radius:12px}.mini b,.mini small{display:block}.mini small{font-size:10px;color:var(--muted)}
+.goal{padding:13px 0;border-top:1px solid #f0f1f5}.goalTop{display:flex;justify-content:space-between;margin-bottom:7px;font-size:13px}.goalTop span{color:var(--primary)}.range{width:100%}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}.toolbar input,.toolbar select{padding:10px;border:1px solid #dfe3eb;border-radius:10px;background:#fff}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.day{min-height:100px;background:#f8f9fc;border:1px solid #e7eaf1;border-radius:12px;padding:8px}.day.today{border:2px solid var(--primary);background:#f0efff}.dot{display:block;font-size:10px;background:#e8e6ff;color:#574de3;padding:4px;margin-top:5px;border-radius:6px;white-space:nowrap;overflow:hidden}
+.heat{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;margin-top:10px}.heat i{height:23px;border-radius:5px;background:#e8eaf1}.heat i.on{background:#665cf4}
+.timer{text-align:center;padding:30px}.clock{font-size:72px;font-weight:800;margin:20px}.timer button{margin:4px}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.badge{padding:15px;border-radius:14px;background:var(--soft);border:1px solid var(--line)}.badge.lock{opacity:.45}
+.bars{display:flex;align-items:end;gap:9px;height:170px;margin-top:20px}.bar{flex:1;background:var(--primary);border-radius:7px 7px 2px 2px;min-height:5px}
+dialog{border:0;border-radius:18px;padding:24px;width:min(450px,92%);box-shadow:0 25px 80px #0004}dialog::backdrop{background:#10172b88}dialog h2{margin-top:0}
+input,select,textarea{width:100%;padding:11px;border:1px solid #dfe3eb;border-radius:10px;margin-bottom:9px;background:#fff}.actions{display:flex;justify-content:flex-end;gap:8px}
+.toast{position:fixed;bottom:20px;left:20px;background:#17203a;color:#fff;padding:12px 16px;border-radius:12px;display:none}
+@media(max-width:900px){.sidebar{position:static;width:100%;display:flex;align-items:center;padding:12px}.logo{margin:0}.nav{display:flex;overflow:auto;flex:1}.tip{display:none}main{margin:0;padding:22px 4%}.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.calendar{grid-template-columns:repeat(2,1fr)}.badges{grid-template-columns:1fr}.top h1{font-size:24px}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+<div class="logo"><span>✦</span> PLANORA</div>
+<nav class="nav">
+<button class="active" data-v="dashboard">🏠 داشبورد</button><button data-v="tasks">✓ کارها</button><button data-v="habits">🔥 عادت‌ها</button><button data-v="goals">🎯 اهداف</button><button data-v="calendar">📅 تقویم</button><button data-v="analytics">📊 عملکرد</button><button data-v="focus">⏱️ تمرکز</button><button data-v="achievements">🏆 دستاوردها</button>
+</nav><div class="tip"><b>نکته امروز</b><br>پیشرفت کوچک هم پیشرفت است 🌱</div>
+</aside>
+
+<main>
+<div class="top"><div><div class="muted" id="dateText"></div><h1 id="title">داشبورد امروز 👋</h1></div><button class="primary" onclick="openM('taskM')">＋ کار جدید</button></div>
+
+<section class="view active" id="dashboard">
+<div class="stats"><div class="stat"><span>امتیاز امروز</span><strong id="score">0%</strong><small>کار + عادت</small></div><div class="stat"><span>کارهای امروز</span><strong id="taskStat">0/0</strong><small>انجام شده</small></div><div class="stat"><span>عادت‌ها</span><strong id="habitStat">0/0</strong><small>امروز</small></div><div class="stat"><span>🔥 بهترین Streak</span><strong id="streak">0</strong><small>روز</small></div></div>
+<div class="grid"><div class="card"><div class="head"><div><h2>برنامه امروز</h2><div class="muted">مرتب‌سازی بر اساس اولویت و زمان</div></div><button class="secondary" onclick="showV('tasks')">همه</button></div><div id="dashTasks"></div></div>
+<div class="card"><div class="head"><div><h2>عادت‌های روزانه 🔥</h2><div class="muted">امروز انجامشان بده</div></div><button class="secondary" onclick="showV('habits')">مدیریت</button></div><div id="dashHabits"></div></div></div>
+<div class="grid"><div class="card"><h2>پیشرفت امروز 📈</h2><div class="big" id="dashScore">0%</div><div class="progress"><i id="dashBar" style="width:0%"></i></div><div class="mini"><div><b id="doneN">0</b><small>کار انجام‌شده</small></div><div><b id="habN">0</b><small>عادت امروز</small></div><div><b id="focusN">0</b><small>جلسه تمرکز</small></div></div></div>
+<div class="card"><div class="head"><h2>اهداف 🎯</h2><button class="secondary" onclick="openM('goalM')">＋ هدف</button></div><div id="dashGoals"></div></div></div>
+</section>
+
+<section class="view" id="tasks"><div class="card"><div class="head"><div><h2>مدیریت کارها ✓</h2><div class="muted">جستجو، فیلتر، اولویت و تکرار</div></div><button class="primary" onclick="openM('taskM')">＋ کار جدید</button></div><div class="toolbar"><input id="search" placeholder="🔍 جستجو..." oninput="renderTasks()"><select id="filter" onchange="renderTasks()"><option value="all">همه</option><option value="todo">انجام‌نشده</option><option value="done">انجام‌شده</option><option value="high">اولویت زیاد</option></select><select id="dayFilter" onchange="renderTasks()"><option value="today">امروز</option><option value="all">همه تاریخ‌ها</option></select></div><div id="allTasks"></div></div></section>
+
+<section class="view" id="habits"><div class="grid"><div class="card"><div class="head"><div><h2>عادت‌های روزانه 🔥</h2><div class="muted">Streak واقعی</div></div><button class="primary" onclick="openM('habitM')">＋ عادت</button></div><div id="allHabits"></div></div><div class="card"><h2>تقویم ۲۸ روزه عادت‌ها</h2><div class="muted">خانه‌های پرشده یعنی عادت انجام شده</div><div id="heat"></div></div></div></section>
+
+<section class="view" id="goals"><div class="card"><div class="head"><div><h2>اهداف 🎯</h2><div class="muted">درصد را با اسلایدر تغییر بده</div></div><button class="primary" onclick="openM('goalM')">＋ هدف</button></div><div id="allGoals"></div></div></section>
+
+<section class="view" id="calendar"><div class="card"><div class="head"><div><h2>تقویم برنامه 📅</h2><div class="muted">کارهای هر روز</div></div><div><button class="secondary" onclick="month(-1)">‹</button> <b id="monthName"></b> <button class="secondary" onclick="month(1)">›</button></div></div><div class="calendar" id="cal"></div></div></section>
+
+<section class="view" id="analytics"><div class="grid"><div class="card"><h2>عملکرد هفتگی 📊</h2><div class="big" id="overall">0%</div><div class="progress"><i id="overallBar" style="width:0%"></i></div><div class="bars" id="bars"></div></div><div class="card"><h2>آمار</h2><div class="mini"><div><b id="totalDone">0</b><small>کل کارهای انجام‌شده</small></div><div><b id="best">0</b><small>بهترین Streak</small></div><div><b id="ach">0</b><small>دستاورد باز</small></div></div></div></div></section>
+
+<section class="view" id="focus"><div class="card timer"><h2>Focus Mode 🎯</h2><div class="muted">۲۵ دقیقه تمرکز بدون حواس‌پرتی</div><select id="focusTask" style="max-width:430px;margin-top:18px"></select><div class="clock" id="clock">25:00</div><button class="primary" onclick="start()">شروع</button><button class="secondary" onclick="pause()">توقف</button><button class="secondary" onclick="resetTimer()">ریست</button></div></section>
+
+<section class="view" id="achievements"><div class="card"><div class="head"><div><h2>دستاوردها 🏆</h2><div class="muted">با ادامه دادن بازشان کن</div></div></div><div class="badges" id="badges"></div></div></section>
+</main>
+
+<dialog id="taskM"><form id="taskForm"><h2>کار جدید</h2><input id="tt" required placeholder="عنوان کار"><textarea id="tn" placeholder="توضیحات اختیاری"></textarea><input id="td" type="date" required><input id="tm" type="time"><select id="tp"><option>کم</option><option selected>متوسط</option><option>زیاد</option></select><select id="tr"><option value="none">بدون تکرار</option><option value="daily">هر روز</option><option value="weekly">هر هفته</option></select><div class="actions"><button type="button" class="secondary" onclick="this.closest('dialog').close()">لغو</button><button class="primary">ذخیره</button></div></form></dialog>
+<dialog id="habitM"><form id="habitForm"><h2>عادت جدید</h2><input id="hn" required placeholder="مثلاً مطالعه روزانه"><input id="hi" value="📚" placeholder="ایموجی"><div class="actions"><button type="button" class="secondary" onclick="this.closest('dialog').close()">لغو</button><button class="primary">ساخت عادت</button></div></form></dialog>
+<dialog id="goalM"><form id="goalForm"><h2>هدف جدید</h2><input id="gn" required placeholder="مثلاً یادگیری زبان"><div class="actions"><button type="button" class="secondary" onclick="this.closest('dialog').close()">لغو</button><button class="primary">ساخت هدف</button></div></form></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY="planora-complete-v1";let D=JSON.parse(localStorage.getItem(KEY)||'{"tasks":[],"habits":[],"goals":[],"focus":0}');
+const today=()=>{let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+dateText.textContent=new Date().toLocaleDateString("fa-IR",{weekday:"long",year:"numeric",month:"long",day:"numeric"});td.value=today();
+function save(){localStorage.setItem(KEY,JSON.stringify(D));render()}
+function openM(id){document.getElementById(id).showModal()}
+const titles={dashboard:"داشبورد امروز 👋",tasks:"کارها ✓",habits:"عادت‌های روزانه 🔥",goals:"اهداف 🎯",calendar:"تقویم 📅",analytics:"عملکرد 📊",focus:"Focus Mode 🎯",achievements:"دستاوردها 🏆"};
+function showV(v){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.getElementById(v).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.v===v));title.textContent=titles[v];if(v==="calendar")renderCalendar()}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>showV(b.dataset.v));
+taskForm.onsubmit=e=>{e.preventDefault();D.tasks.push({id:Date.now(),title:tt.value,note:tn.value,date:td.value,time:tm.value,priority:tp.value,repeat:tr.value,done:false});e.target.closest("dialog").close();e.target.reset();td.value=today();save();toast("کار اضافه شد ✓")};
+habitForm.onsubmit=e=>{e.preventDefault();D.habits.push({id:Date.now(),name:hn.value,icon:hi.value||"✨",logs:{}});e.target.closest("dialog").close();e.target.reset();hi.value="📚";save();toast("عادت ساخته شد 🔥")};
+goalForm.onsubmit=e=>{e.preventDefault();D.goals.push({id:Date.now(),title:gn.value,progress:0});e.target.closest("dialog").close();e.target.reset();save();toast("هدف ساخته شد 🎯")};
+function toggleTask(id){let x=D.tasks.find(x=>x.id===id);x.done=!x.done;save()}
+function delTask(id){D.tasks=D.tasks.filter(x=>x.id!==id);save()}
+function toggleHabit(id){let h=D.habits.find(x=>x.id===id);h.logs[today()]=!h.logs[today()];save()}
+function delHabit(id){D.habits=D.habits.filter(x=>x.id!==id);save()}
+function setGoal(id,v){let g=D.goals.find(x=>x.id===id);g.progress=+v;save()}
+function delGoal(id){D.goals=D.goals.filter(x=>x.id!==id);save()}
+function streak(h){let n=0,d=new Date();while(h.logs[iso(d)]){n++;d.setDate(d.getDate()-1)}return n}
+function bestStreak(h){let best=0,n=0,d=new Date();for(let i=0;i<365;i++){if(h.logs[iso(d)])n++;else n=0;best=Math.max(best,n);d.setDate(d.getDate()-1)}return best}
+function scoreCalc(){let ts=D.tasks.filter(x=>x.date===today()),hd=D.habits.filter(x=>x.logs[today()]);let a=ts.length?ts.filter(x=>x.done).length/ts.length:0,b=D.habits.length?hd.length/D.habits.length:0;return(ts.length||D.habits.length)?Math.round((a+b)/((ts.length?1:0)+(D.habits.length?1:0))*100):0}
+function taskHTML(x){return `<div class="row"><a href="#" class="check ${x.done?"on":""}" onclick="toggleTask(${x.id});return false">${x.done?"✓":""}</a><div class="grow"><b style="${x.done?"text-decoration:line-through;color:#a6acb7":""}">${esc(x.title)}</b><small>${x.time||"بدون ساعت"}${x.repeat!=="none"?" • تکرارشونده":""}</small></div><span class="tag">${esc(x.priority)}</span><a class="danger" href="#" onclick="delTask(${x.id});return false">×</a></div>`}
+function renderTasks(){let q=(search.value||"").toLowerCase(),f=filter.value,df=dayFilter.value;let a=D.tasks.filter(x=>(x.title+" "+x.note).toLowerCase().includes(q)).filter(x=>df==="all"||x.date===today()).filter(x=>f==="all"||(f==="todo"&&!x.done)||(f==="done"&&x.done)||(f==="high"&&x.priority==="زیاد")).sort((a,b)=>a.done-b.done||(a.time||"").localeCompare(b.time||""));allTasks.innerHTML=a.length?a.map(taskHTML).join(""):'<div class="empty">کاری پیدا نشد.</div>'}
+function renderHabits(){allHabits.innerHTML=D.habits.length?D.habits.map(h=>`<div class="row"><div class="icon">${esc(h.icon)}</div><div class="grow"><b>${esc(h.name)}</b><small>🔥 Streak: ${streak(h)} روز • بهترین: ${bestStreak(h)}</small></div><a class="habit" href="#" onclick="toggleHabit(${h.id});return false">${h.logs[today()]?"✓":"○"}</a><a class="danger" href="#" onclick="delHabit(${h.id});return false">×</a></div>`).join(""):'<div class="empty">هنوز عادتی نساختی.</div>';heat.innerHTML=D.habits.map(h=>`<div style="margin:15px 0"><b>${esc(h.name)}</b><div class="heat">${Array.from({length:28},(_,i)=>{let d=new Date();d.setDate(d.getDate()-27+i);return `<i class="${h.logs[iso(d)]?"on":""}" title="${iso(d)}"></i>`}).join("")}</div></div>`).join("")}
+function goalHTML(g){return `<div class="goal"><div class="goalTop"><b>${esc(g.title)}</b><span>${g.progress}%</span></div><input type="range" min="0" max="100" value="${g.progress}" oninput="setGoal(${g.id},this.value)"><div class="progress"><i style="width:${g.progress}%"></i></div><a class="danger" href="#" onclick="delGoal(${g.id});return false">حذف هدف</a></div>`}
+function renderGoals(){allGoals.innerHTML=D.goals.length?D.goals.map(goalHTML).join(""):'<div class="empty">هنوز هدفی نداری.</div>';dashGoals.innerHTML=D.goals.slice(0,4).map(g=>`<div class="goal"><div class="goalTop"><b>${esc(g.title)}</b><span>${g.progress}%</span></div><div class="progress"><i style="width:${g.progress}%"></i></div></div>`).join("")||'<div class="empty">هدف جدید بساز 🎯</div>'}
+function renderDashboard(){let ts=D.tasks.filter(x=>x.date===today()),done=ts.filter(x=>x.done).length,hd=D.habits.filter(x=>x.logs[today()]).length,s=scoreCalc();dashTasks.innerHTML=ts.length?ts.map(taskHTML).join(""):'<div class="empty">برای امروز کاری ثبت نشده ✨</div>';dashHabits.innerHTML=D.habits.map(h=>`<div class="row"><div class="icon">${esc(h.icon)}</div><div class="grow"><b>${esc(h.name)}</b><small>🔥 ${streak(h)} روز</small></div><a class="habit" href="#" onclick="toggleHabit(${h.id});return false">${h.logs[today()]?"✓":"○"}</a></div>`).join("")||'<div class="empty">اولین عادتت را بساز.</div>';score.textContent=s+"%";dashScore.textContent=s+"%";dashBar.style.width=s+"%";taskStat.textContent=done+"/"+ts.length;habitStat.textContent=hd+"/"+D.habits.length;doneN.textContent=done;habN.textContent=hd;focusN.textContent=D.focus||0;streak.textContent=Math.max(0,...D.habits.map(streak),0)}
+let calDate=new Date();
+function renderCalendar(){let y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1),start=(first.getDay()+1)%7,days=new Date(y,m+1,0).getDate();monthName.textContent=new Date(y,m,1).toLocaleDateString("fa-IR",{month:"long",year:"numeric"});let names=["ش","ی","د","س","چ","پ","ج"];cal.innerHTML=names.map(x=>`<div style="text-align:center;font-weight:bold">${x}</div>`).join("");for(let i=0;i<start;i++)cal.innerHTML+="<div></div>";for(let n=1;n<=days;n++){let d=iso(new Date(y,m,n)),a=D.tasks.filter(x=>x.date===d);cal.innerHTML+=`<div class="day ${d===today()?"today":""}"><b>${n}</b>${a.slice(0,4).map(x=>`<span class="dot">${esc(x.title)}</span>`).join("")}</div>`}}
+function month(n){calDate.setMonth(calDate.getMonth()+n);renderCalendar()}
+function renderAnalytics(){let o=scoreCalc();overall.textContent=o+"%";overallBar.style.width=o+"%";totalDone.textContent=D.tasks.filter(x=>x.done).length;best.textContent=Math.max(0,...D.habits.map(bestStreak),0);let vals=[];for(let i=6;i>=0;i--){let d=new Date();d.setDate(d.getDate()-i);let k=iso(d),t=D.tasks.filter(x=>x.date===k);vals.push(t.length?Math.round(t.filter(x=>x.done).length/t.length*100):0)}bars.innerHTML=vals.map(v=>`<div class="bar" style="height:${Math.max(5,v)}%" title="${v}%"></div>`).join("")}
+function renderFocus(){focusTask.innerHTML='<option value="">انتخاب کار</option>'+D.tasks.filter(x=>!x.done).map(x=>`<option value="${x.id}">${esc(x.title)}</option>`).join("")}
+function renderBadges(){let done=D.tasks.filter(x=>x.done).length,mx=Math.max(0,...D.habits.map(bestStreak),0),a=[["🥇","اولین کار","یک کار انجام بده",done>=1],["🔥","هفت روز","Streak هفت روزه",mx>=7],["📚","عادت‌ساز","۳ عادت بساز",D.habits.length>=3],["🎯","هدف‌گذار","یک هدف بساز",D.goals.length>=1],["🏆","ده کار","۱۰ کار انجام بده",done>=10],["⏱️","تمرکز","۵ جلسه Focus",D.focus>=5]];badges.innerHTML=a.map(x=>`<div class="badge ${x[3]?"":"lock"}"><div style="font-size:30px">${x[0]}</div><b>${x[1]}</b><div class="muted">${x[2]}</div><div style="margin-top:7px">${x[3]?"✓ باز شد":"🔒 قفل"}</div></div>`).join("");ach.textContent=a.filter(x=>x[3]).length}
+let sec=1500,timer=null;function tick(){clock.textContent=String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}function start(){if(timer)return;timer=setInterval(()=>{sec--;tick();if(sec<=0){clearInterval(timer);timer=null;D.focus=(D.focus||0)+1;save();alert("جلسه تمرکز تمام شد 🎉");resetTimer()}},1000)}function pause(){clearInterval(timer);timer=null}function resetTimer(){pause();sec=1500;tick()}
+function toast(t){toastEl=document.getElementById("toast");toastEl.textContent=t;toastEl.style.display="block";setTimeout(()=>toastEl.style.display="none",1500)}
+function render(){renderDashboard();renderTasks();renderHabits();renderGoals();renderCalendar();renderAnalytics();renderFocus();renderBadges()}
+render();
+</script>
+</body></html>
